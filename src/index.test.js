@@ -730,6 +730,64 @@ describe('#index', function () {
           TreatMissingData: 'breaching',
         }
       });
+
+      it('should merge any \'cloudformation\' keys into the AWS::CloudWatch::Alarm declaration', () => {
+        const alertTopics = {
+          ok: 'ok-topic',
+          alarm: 'alarm-topic',
+          insufficientData: 'insufficientData-topic',
+        };
+
+        const definition = {
+          description: 'An error alarm',
+          namespace: 'AWS/Lambda',
+          metric: 'Errors',
+          threshold: 1,
+          statistic: 'p95',
+          period: 300,
+          evaluationPeriods: 1,
+          comparisonOperator: 'GreaterThanThreshold',
+          treatMissingData: 'breaching',
+          cloudformation: {
+            AlarmName: 'Custom alarm name',
+            Threshold: 35,
+            OKActions: ['other-topic'],
+            Statistic: 'SampleCount',
+          }
+        };
+
+        const functionRef = 'func-ref';
+
+        const cf = plugin.getAlarmCloudFormation(alertTopics, definition, functionRef);
+
+        expect(cf).toEqual({
+          Type: 'AWS::CloudWatch::Alarm',
+          Properties: {
+            AlarmName: definition.cloudformation.AlarmName,
+            AlarmDescription: definition.description,
+            Namespace: definition.namespace,
+            MetricName: definition.metric,
+            Threshold: definition.cloudformation.Threshold,
+            // while technically incorrect syntax, the 'cloudformation' property is an escape-hatch
+            // and as such shouldn't follow strict validation if used
+            Statistic: definition.cloudformation.Statistic,
+            ExtendedStatistic: definition.statistic,
+            Period: definition.period,
+            EvaluationPeriods: definition.evaluationPeriods,
+            ComparisonOperator: definition.comparisonOperator,
+            OKActions: definition.cloudformation.OkActions,
+            AlarmActions: ['alarm-topic'],
+            InsufficientDataActions: ['insufficientData-topic'],
+            Dimensions: [{
+              Name: 'FunctionName',
+              Value: {
+                Ref: functionRef,
+              }
+            }],
+            TreatMissingData: 'breaching',
+          }
+        });
+      });
     });
-  })
+  });
 });

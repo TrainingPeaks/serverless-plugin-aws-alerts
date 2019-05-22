@@ -131,7 +131,7 @@ class AlertsPlugin {
     } else {
       alarm.Properties.ExtendedStatistic = definition.statistic
     }
-    return alarm;
+    return Object.assign(alarm, (definition.cloudformation || {}));
   }
 
   getSnsTopicCloudFormation(topicName, notifications) {

@@ -1,4 +1,5 @@
 # Serverless AWS Alerts Plugin
+
   [![NPM version][npm-image]][npm-url]
   [![Build Status][travis-image]][travis-url]
   [![Dependency Status][daviddm-image]][daviddm-url]
@@ -7,6 +8,7 @@
 A Serverless plugin to easily add CloudWatch alarms to functions
 
 ## Installation
+
 `npm i serverless-plugin-aws-alerts`
 
 ## Usage
@@ -41,6 +43,19 @@ custom:
         period: 300
         evaluationPeriods: 1
         comparisonOperator: GreaterThanOrEqualToThreshold
+      # the 'cloudformation' property will be merged into the resulting AWS::CloudWatch::Alarm CloudFormation
+      # resource. This is useful if this plugin is not up to date with the latest alarm features, or as an escape hatch
+      customAlarmWithCloudformationEscapeHatch:
+        description: 'My custom alarm with a custm name'
+        namespace: 'AWS/Lambda'
+        metric: duration
+        threshold: 200
+        statistic: Average
+        period: 300
+        evaluationPeriods: 1
+        comparisonOperator: GreaterThanOrEqualToThreshold
+        cloudformation:
+          AlarmName: 'My Custom Alarm Name'
     alarms:
       - functionThrottles
       - functionErrors
@@ -89,6 +104,7 @@ custom:
 You can configure notifications to send to webhook URLs, to SMS devices, to other Lambda functions, and more. Check out the AWS docs [here](http://docs.aws.amazon.com/sns/latest/api/API_Subscribe.html) for configuration options.
 
 ## Metric Log Filters
+
 You can monitor a log group for a function for a specific pattern. Do this by adding the pattern key.
 You can learn about custom patterns at: http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/FilterAndPatternSyntax.html
 
@@ -119,6 +135,7 @@ custom:
 > Note: For custom log metrics, namespace property will automatically be set to stack name (e.g. `fooservice-dev`).
 
 ## Default Definitions
+
 The plugin provides some default definitions that you can simply drop into your application. For example:
 
 ```yaml
@@ -203,7 +220,6 @@ definitions:
 ## License
 
 MIT © [A Cloud Guru](https://acloud.guru/)
-
 
 [npm-image]: https://badge.fury.io/js/serverless-plugin-aws-alerts.svg
 [npm-url]: https://npmjs.org/package/serverless-plugin-aws-alerts
