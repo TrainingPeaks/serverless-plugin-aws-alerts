@@ -43,7 +43,7 @@ custom:
         period: 300
         evaluationPeriods: 1
         comparisonOperator: GreaterThanOrEqualToThreshold
-      # the 'cloudformation' property will be merged into the resulting AWS::CloudWatch::Alarm CloudFormation
+      # the 'cloudFormation' property will be merged into the resulting AWS::CloudWatch::Alarm CloudFormation
       # resource. This is useful if this plugin is not up to date with the latest alarm features, or as an escape hatch
       customAlarmWithCloudformationEscapeHatch:
         description: 'My custom alarm with a custm name'
@@ -54,7 +54,7 @@ custom:
         period: 300
         evaluationPeriods: 1
         comparisonOperator: GreaterThanOrEqualToThreshold
-        cloudformation:
+        cloudFormation:
           AlarmName: 'My Custom Alarm Name'
     alarms:
       - functionThrottles

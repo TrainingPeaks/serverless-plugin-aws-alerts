@@ -731,7 +731,7 @@ describe('#index', function () {
         }
       });
 
-      it('should merge any \'cloudformation\' keys into the AWS::CloudWatch::Alarm declaration', () => {
+      it('should merge any \'cloudFormation\' keys into the AWS::CloudWatch::Alarm declaration', () => {
         const alertTopics = {
           ok: 'ok-topic',
           alarm: 'alarm-topic',
@@ -748,7 +748,7 @@ describe('#index', function () {
           evaluationPeriods: 1,
           comparisonOperator: 'GreaterThanThreshold',
           treatMissingData: 'breaching',
-          cloudformation: {
+          cloudFormation: {
             AlarmName: 'Custom alarm name',
             Threshold: 35,
             OKActions: ['other-topic'],
@@ -763,19 +763,19 @@ describe('#index', function () {
         expect(cf).toEqual({
           Type: 'AWS::CloudWatch::Alarm',
           Properties: {
-            AlarmName: definition.cloudformation.AlarmName,
+            AlarmName: definition.cloudFormation.AlarmName,
             AlarmDescription: definition.description,
             Namespace: definition.namespace,
             MetricName: definition.metric,
-            Threshold: definition.cloudformation.Threshold,
-            // while technically incorrect syntax, the 'cloudformation' property is an escape-hatch
+            Threshold: definition.cloudFormation.Threshold,
+            // while technically incorrect syntax, the 'cloudFormation' property is an escape-hatch
             // and as such shouldn't follow strict validation if used
-            Statistic: definition.cloudformation.Statistic,
+            Statistic: definition.cloudFormation.Statistic,
             ExtendedStatistic: definition.statistic,
             Period: definition.period,
             EvaluationPeriods: definition.evaluationPeriods,
             ComparisonOperator: definition.comparisonOperator,
-            OKActions: definition.cloudformation.OkActions,
+            OKActions: definition.cloudFormation.OkActions,
             AlarmActions: ['alarm-topic'],
             InsufficientDataActions: ['insufficientData-topic'],
             Dimensions: [{
