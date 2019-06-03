@@ -16,7 +16,7 @@
   "author": "John McKim <john@acloud.guru>",
   "license": "MIT",
   "peerDependencies": {
-    "serverless": "^1.12.0"
+    "serverless": "~1.41.0"
   },
   "dependencies": {
     "lodash": "^4.16.6"
